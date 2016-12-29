@@ -37,7 +37,7 @@ function timagesc(im, do_square)
         im = permute(mean(reshape(im, 2, size(im, 1)/2, size(im, 2)), 1), [2 3 1]);
     end
 
-    im = floor(im*(numel(vals)-1));
+    im = min(floor(im*numel(vals)), numel(vals)-1);
 
     im = vals(im+1);
 
