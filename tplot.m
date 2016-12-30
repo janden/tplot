@@ -58,21 +58,23 @@ function tplot(x, style)
 
     buf = repmat(32, win(1), win(2));
 
-    for k = 1:numel(x)
-        buf(1+x(k),2*(k-1)+1) = val(1);
+    for l = 1:size(x, 2)
+        for k = 1:size(x, 1)
+            buf(1+x(k,l),2*(k-1)+1) = val(1);
 
-        if k < numel(x)
-            if x(k+1) == x(k)
-                buf(1+x(k),2*k) = val(1);
-            else
-                if x(k+1) < x(k)
-                    buf(1+x(k),2*k) = val(4);
-                    buf(1+x(k+1),2*k) = val(6);
+            if k < size(x, 1)
+                if x(k+1,l) == x(k,l)
+                    buf(1+x(k,l),2*k) = val(1);
                 else
-                    buf(1+x(k),2*k) = val(5);
-                    buf(1+x(k+1),2*k) = val(3);
+                    if x(k+1,l) < x(k,l)
+                        buf(1+x(k,l),2*k) = val(4);
+                        buf(1+x(k+1,l),2*k) = val(6);
+                    else
+                        buf(1+x(k,l),2*k) = val(5);
+                        buf(1+x(k+1,l),2*k) = val(3);
+                    end
+                    buf(1+[min(x(k,l), x(k+1,l))+1:max(x(k,l), x(k+1,l))-1], 2*k) = val(2);
                 end
-                buf(1+[min(x(k), x(k+1))+1:max(x(k), x(k+1))-1], 2*k) = val(2);
             end
         end
     end
