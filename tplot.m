@@ -1,13 +1,10 @@
 % TPLOT Line plot in terminal
 %
 % Usage
-%    tplot(x, style);
+%    tplot(x);
 %
 % Input
 %    x: The values to be plotted.
-%    style: The style of the line. Can be any of 'thin', 'thin-rounded',
-%       'thin-dashed', 'thin-dashed-rounded', 'thick', 'thick-dashed',
-%       or 'double' (default 'thin').
 %
 % Description
 %    Plots the values in the x array as a line plot using block elements. The
@@ -20,33 +17,6 @@ function tplot(x, style)
 
     win = [22 2*size(x, 1)-1];
 
-    if strcmp(style, 'thin')
-        val = [hex2dec('2500') hex2dec('2502') ...
-               hex2dec('250c') hex2dec('2510') hex2dec('2518') hex2dec('2514')];
-    elseif strcmp(style, 'thin-rounded')
-        val = [hex2dec('2500') hex2dec('2502') ...
-               hex2dec('256d') hex2dec('256e') hex2dec('256f') hex2dec('2570')];
-    elseif strcmp(style, 'thin-dashed')
-        val = [hex2dec('254c') hex2dec('254e') ...
-               hex2dec('250c') hex2dec('2510') hex2dec('2518') hex2dec('2514')];
-    elseif strcmp(style, 'thin-dashed-rounded')
-        val = [hex2dec('254c') hex2dec('254e') ...
-               hex2dec('256d') hex2dec('256e') hex2dec('256f') hex2dec('2570')];
-    elseif strcmp(style, 'thick')
-        val = [hex2dec('2501') hex2dec('2503') ...
-               hex2dec('250f') hex2dec('2513') hex2dec('251b') hex2dec('2517')];
-    elseif strcmp(style, 'thick-dashed')
-        val = [hex2dec('254d') hex2dec('254f') ...
-               hex2dec('250f') hex2dec('2513') hex2dec('251b') hex2dec('2517')];
-    elseif strcmp(style, 'double')
-        val = [hex2dec('2550') hex2dec('2551') ...
-               hex2dec('2554') hex2dec('2557') hex2dec('255d') hex2dec('255a')];
-    else
-        error(['style must be one of ''thin'', ''thin-rounded'', ' ...
-               '''thin-dashed'', ''thin-dashed-rounded'', ''thick'', ' ...
-               '''thick-dashed'', or ''double''.']);
-    end
-
     mn = min(x(:));
     mx = max(x(:));
 
@@ -54,30 +24,33 @@ function tplot(x, style)
 
     x = round(x*(win(1)-1));
 
-    buf = repmat(32, win(1), win(2));
+    buf = ones([4 win(1) win(2)]);
 
     for l = 1:size(x, 2)
+        code = 2+mod(l-1, 2);
         for k = 1:size(x, 1)
-            buf(1+x(k,l),2*(k-1)+1) = val(1);
+            buf([2 4],1+x(k,l),2*(k-1)+1) = code;
 
             if k < size(x, 1)
                 if x(k+1,l) == x(k,l)
-                    buf(1+x(k,l),2*k) = val(1);
+                    buf([2 4],1+x(k,l),2*k) = code;
                 else
                     if x(k+1,l) < x(k,l)
-                        buf(1+x(k,l),2*k) = val(4);
-                        buf(1+x(k+1,l),2*k) = val(6);
+                        buf([3 4],1+x(k,l),2*k) = code;
+                        buf([1 2],1+x(k+1,l),2*k) = code;
                     else
-                        buf(1+x(k,l),2*k) = val(5);
-                        buf(1+x(k+1,l),2*k) = val(3);
+                        buf([1 4],1+x(k,l),2*k) = code;
+                        buf([2 3],1+x(k+1,l),2*k) = code;
                     end
-                    buf(1+[min(x(k,l), x(k+1,l))+1:max(x(k,l), x(k+1,l))-1], 2*k) = val(2);
+                    buf([1 3],1+[min(x(k,l), x(k+1,l))+1:max(x(k,l), x(k+1,l))-1], 2*k) = code;
                 end
             end
         end
     end
 
-    buf = flipud(buf);
+    buf = flip(buf, 2);
+
+    buf = reshape(compose(reshape(buf, [4 prod(win)])), win);
 
     for l = 1:size(buf, 1)
         fprintf('%c', [buf(l,:) 10]);
