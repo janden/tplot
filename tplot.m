@@ -27,7 +27,7 @@ function tplot(x, style)
     buf = ones([4 win(1) win(2)]);
 
     for l = 1:size(x, 2)
-        code = 2+mod(l-1, 2);
+        code = 2+mod(l-1, 4);
         for k = 1:size(x, 1)
             buf([2 4],1+x(k,l),2*(k-1)+1) = code;
 

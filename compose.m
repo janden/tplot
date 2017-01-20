@@ -7,7 +7,7 @@
 %    code: An array of size 4-by-n where each of the four elements in each
 %       column corresponding to a different direction (up, right, down, and
 %       left) which can take one of the values 1 (empty), 2 (thin) or 3
-%       (thick).
+%       (thick), 4 (thin dashed) and 5 (thick dashed).
 %
 % Output
 %     code_char: An array of size 1-by-n containing the Unicode code point
@@ -108,5 +108,18 @@ function code_char = compose(code)
 
     chars(1,1,1,1) = 32;
 
-    code_char = chars(1+3.^[0:3]*(code-1));
+    mask1 = all(bsxfun(@eq, [4 1 4 1]', code), 1);
+    mask2 = all(bsxfun(@eq, [1 4 1 4]', code), 1);
+
+    mask3 = all(bsxfun(@eq, [5 1 5 1]', code), 1);
+    mask4 = all(bsxfun(@eq, [1 5 1 5]', code), 1);
+
+    mask = mask1|mask2|mask3|mask4;
+
+    code_char(mask1) = hex2dec('254e');
+    code_char(mask2) = hex2dec('254c');
+    code_char(mask3) = hex2dec('254f');
+    code_char(mask4) = hex2dec('254d');
+
+    code_char(~mask) = chars(1+3.^[0:3]*(feval(@(x,y)(x(y)), [1 2 3 2 3]', code(:,~mask))-1));
 end
