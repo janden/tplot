@@ -18,9 +18,7 @@ function tplot(x, style)
         style = 'thin';
     end
 
-    win = [22 2*numel(x)-1];
-
-    width = 2*numel(x)-1;
+    win = [22 2*size(x, 1)-1];
 
     if strcmp(style, 'thin')
         val = [hex2dec('2500') hex2dec('2502') ...
