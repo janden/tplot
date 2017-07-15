@@ -12,23 +12,27 @@
 %    support Unicode.
 
 function timagesc(im)
-    vals = [32 hex2dec('2591') hex2dec('2592') hex2dec('2593') hex2dec('2588')];
-
     mn = min(im(:));
     mx = max(im(:));
 
     if mn ~= mx
-        im = (im-mn)/(mx-mn);
+        buf = (im-mn)/(mx-mn);
     else
-        im = zeros(size(im));
+        buf = zeros(size(im));
     end
 
-    im = min(floor(im*numel(vals)), numel(vals)-1);
+    timagesc_render(buf);
+end
 
-    im = vals(im+1);
+function timagesc_render(buf)
+    vals = [32 hex2dec('2591') hex2dec('2592') hex2dec('2593') hex2dec('2588')];
 
-    for k = 1:size(im, 1)
-        fprintf('%c', im(k,:));
+    buf = min(floor(buf*numel(vals)), numel(vals)-1);
+
+    chars = vals(buf+1);
+
+    for k = 1:size(chars, 1)
+        fprintf('%c', chars(k,:));
         fprintf('\n');
     end
 end
