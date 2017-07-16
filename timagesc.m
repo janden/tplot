@@ -20,6 +20,15 @@ function timagesc(im, climits)
 
     render_mode = 1;
 
+    if ndims(im) > 2
+        warning('Array has more than two dimensions. Displaying first slice.');
+
+        sz = size(im);
+
+        im = im(1:sz(1)*sz(2));
+        im = reshape(im, sz(1:2));
+    end
+
     if any(imag(im(:))~=0)
         warning('Image has imaginary components. Ignoring.');
 
