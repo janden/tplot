@@ -69,15 +69,18 @@ function timagesc_render(buf, render_mode)
 
         block_str = sprintf('%c', hex2dec('2580'));
 
+        output = char([]);
         for k = 1:2:size(buf, 1)
             for l = 1:size(buf, 2)
-                fprintf([escape_str up_str{buf(k,l)+1} join_str ...
-                    down_str{buf(k+1,l)+1} unescape_str block_str]);
+                output = [output escape_str up_str{buf(k,l)+1} join_str ...
+                    down_str{buf(k+1,l)+1} unescape_str block_str];
             end
-            fprintf('\n');
+            output = [output char(10)];
         end
 
-        fprintf([escape_str reset_str unescape_str]);
+        output = [output escape_str reset_str unescape_str];
+
+        fprintf('%s', output);
     else
         error('Invalid `render_mode`.');
     end
