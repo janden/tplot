@@ -12,6 +12,8 @@
 %    support Unicode.
 
 function timagesc(im)
+    render_mode = 0;
+
     mn = min(im(:));
     mx = max(im(:));
 
@@ -21,18 +23,22 @@ function timagesc(im)
         buf = zeros(size(im));
     end
 
-    timagesc_render(buf);
+    timagesc_render(buf, render_mode);
 end
 
-function timagesc_render(buf)
-    vals = [32 hex2dec('2591') hex2dec('2592') hex2dec('2593') hex2dec('2588')];
+function timagesc_render(buf, render_mode)
+    if render_mode == 0
+        vals = [32 hex2dec('2591') hex2dec('2592') hex2dec('2593') hex2dec('2588')];
 
-    buf = min(floor(buf*numel(vals)), numel(vals)-1);
+        buf = min(floor(buf*numel(vals)), numel(vals)-1);
 
-    chars = vals(buf+1);
+        chars = vals(buf+1);
 
-    for k = 1:size(chars, 1)
-        fprintf('%c', chars(k,:));
-        fprintf('\n');
+        for k = 1:size(chars, 1)
+            fprintf('%c', chars(k,:));
+            fprintf('\n');
+        end
+    else
+        error('Invalid `render_mode`.');
     end
 end
