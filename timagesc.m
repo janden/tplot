@@ -1,17 +1,23 @@
 % TIMAGESC Scaled image in terminal
 %
 % Usage
-%    timagesc(im);
+%    timagesc(im, climits);
 %
 % Input
 %    im: A two-dimensional array to be displayed as an image.
+%    climits: A pair of numbers specifying the range of the displayed colors
+%       (default [min(im(:)) max(im(:))]).
 %
 % Description
 %    Takes the image and displays it, like the imagesc function, but in the
 %    terminal using block elements. This requires the terminal window to
 %    support Unicode.
 
-function timagesc(im)
+function timagesc(im, climits)
+    if nargin < 2
+        climits = [];
+    end
+
     render_mode = 1;
 
     if any(imag(im(:))~=0)
@@ -20,11 +26,14 @@ function timagesc(im)
         im = real(im);
     end
 
-    mn = min(im(:));
-    mx = max(im(:));
+    if isempty(climits)
+        climits = [min(im(:)) max(im(:))];
+    end
 
-    if mn ~= mx
-        buf = (im-mn)/(mx-mn);
+    if climits(1) ~= climits(2)
+        buf = (im-climits(1))/(climits(2)-climits(1));
+
+        buf = max(min(buf, 1), 0);
     else
         buf = zeros(size(im));
     end
