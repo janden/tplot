@@ -14,6 +14,12 @@
 function timagesc(im)
     render_mode = 1;
 
+    if any(imag(im(:))~=0)
+        warning('Image has imaginary components. Ignoring.');
+
+        im = real(im);
+    end
+
     mn = min(im(:));
     mx = max(im(:));
 
