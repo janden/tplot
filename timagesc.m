@@ -12,7 +12,7 @@
 %    support Unicode.
 
 function timagesc(im)
-    render_mode = 0;
+    render_mode = 1;
 
     mn = min(im(:));
     mx = max(im(:));
