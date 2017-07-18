@@ -18,6 +18,8 @@ function timagesc(im, climits)
         climits = [];
     end
 
+    win_size = [22 78];
+
     render_mode = 1;
 
     if ndims(im) > 2
@@ -33,6 +35,10 @@ function timagesc(im, climits)
         warning('Image has imaginary components. Ignoring.');
 
         im = real(im);
+    end
+
+    if any(size(im) > win_size)
+        im = timagesc_rescale(im, win_size);
     end
 
     if isempty(climits)
@@ -108,4 +114,22 @@ function timagesc_render(buf, render_mode)
     else
         error('Invalid `render_mode`.');
     end
+end
+
+function im = timagesc_rescale(im, win_size)
+    ratio = size(im, 2)/size(im, 1);
+
+    win_ratio = win_size(2)/win_size(1);
+
+    if ratio >= win_ratio
+        factor = win_size(2)/size(im, 2);
+    else
+        factor = win_size(1)/size(im, 1);
+    end
+
+    im_size = max(1, factor*size(im));
+
+    [Xi, Yi] = meshgrid(1/factor*[0:im_size(2)-1]+1, 1/factor*[0:im_size(1)-1]+1);
+
+    im = interp2(im, Xi, Yi);
 end
