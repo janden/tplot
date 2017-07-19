@@ -131,5 +131,5 @@ function im = timagesc_rescale(im, win_size)
 
     [Xi, Yi] = meshgrid(1/factor*[0:im_size(2)-1]+1, 1/factor*[0:im_size(1)-1]+1);
 
-    im = interp2(im, Xi, Yi);
+    im = interp2(double(im), Xi, Yi);
 end
