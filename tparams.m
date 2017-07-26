@@ -34,4 +34,6 @@ end
 
 function params = default_tparams()
     params = struct();
+
+    params.winsize = [22 78];
 end
