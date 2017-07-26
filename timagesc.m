@@ -18,7 +18,7 @@ function timagesc(im, climits)
         climits = [];
     end
 
-    win_size = [22 78];
+    win_size = twinsize();
 
     render_mode = 1;
 
