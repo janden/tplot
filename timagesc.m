@@ -37,6 +37,14 @@ function timagesc(im, climits)
         im = real(im);
     end
 
+    if render_mode == 1
+        % If `render_mode` is 1, we have double the number of pixels to work
+        % with, so take this into account when adjusting the size of the
+        % image.
+
+        win_size = [2 1].*win_size;
+    end
+
     if any(size(im) > win_size)
         im = timagesc_rescale(im, win_size);
     end
