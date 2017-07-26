@@ -15,7 +15,9 @@ function tplot(x, style)
         style = 'thin';
     end
 
-    win = [22 2*size(x, 1)-1];
+    winsize = twinsize();
+
+    win = [winsize(1) 2*size(x, 1)-1];
 
     mn = min(x(:));
     mx = max(x(:));
