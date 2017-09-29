@@ -77,7 +77,7 @@ function timagesc_render(buf, render_mode)
             fprintf('\n');
         end
     elseif render_mode == 1
-        shade_ct = 26;
+        shade_ct = 24;
 
         buf = min(floor(buf*shade_ct), shade_ct-1);
 
@@ -95,12 +95,7 @@ function timagesc_render(buf, render_mode)
         up_str = {};
         down_str = {};
 
-        up_str{1} = sprintf(fg_str, 0);
-        down_str{1} = sprintf(bg_str, 0);
-        up_str{shade_ct} = sprintf(fg_str, 15);
-        down_str{shade_ct} = sprintf(bg_str, 15);
-
-        for k = 2:shade_ct-1
+        for k = 1:shade_ct
             up_str{k} = sprintf(fg_str, 232+(k-1));
             down_str{k} = sprintf(bg_str, 232+(k-1));
         end
