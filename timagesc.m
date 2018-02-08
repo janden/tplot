@@ -18,6 +18,10 @@ function timagesc(im, climits)
         climits = [];
     end
 
+    if ~isempty(climits) && (numel(climits) ~= 2 || ~isnumeric(climits))
+        error('Input `climits` must be of the form [min max].');
+    end
+
     win_size = twinsize();
 
     render_mode = 1;
@@ -99,6 +103,8 @@ function timagesc_render(buf, render_mode)
             up_str{k} = sprintf(fg_str, 232+(k-1));
             down_str{k} = sprintf(bg_str, 232+(k-1));
         end
+
+        % TODO: Should not end up with 256 in the loop above?
 
         block_str = sprintf('%c', hex2dec('2580'));
 
