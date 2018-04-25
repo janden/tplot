@@ -22,6 +22,8 @@ function tbar(x)
 
     x = x/mx*win;
 
+    x(~isfinite(x)) = 0;
+
     x0 = floor(x);
     x1 = x-x0;
 
