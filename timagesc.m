@@ -24,7 +24,7 @@ function timagesc(im, climits)
 
     win_size = twinsize();
 
-    render_mode = 1;
+    render_mode = trendermode();
 
     if ndims(im) > 2
         warning('Array has more than two dimensions. Displaying first slice.');

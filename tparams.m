@@ -36,4 +36,5 @@ function params = default_tparams()
     params = struct();
 
     params.winsize = [22 78];
+    params.rendermode = 1;
 end
